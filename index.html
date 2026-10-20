@@ -39,10 +39,35 @@
  .teacher-grading button{min-height:30px;padding:5px 9px;font-size:13px}
  .teacher-feedback{font-size:12px;padding-bottom:2px}
 }
+
+/* Reserve both concealed and revealed content in the same grid cell. */
+.answer-slot{display:grid;align-items:center;width:100%;min-width:0;flex-shrink:0}
+.answer-slot>.answer{grid-area:1/1;width:100%;min-width:0}
+.answer-measure{visibility:hidden;pointer-events:none;user-select:none}
+/* Classroom controls occupy their space before revelation and after grading. */
+.teacher-active #teacherGrading[hidden]{display:flex!important;visibility:hidden;pointer-events:none}
+.teacher-active #teacherUndo[hidden],.teacher-active #teacherSkip[hidden]{display:block!important;visibility:hidden;pointer-events:none}
+.teacher-feedback{line-height:1.3;min-height:calc(1.3em + 5px)}
+@media(max-height:520px) and (orientation:landscape){
+ .teacher-active .app{gap:4px}
+ .teacher-active .topbar button{min-height:32px;padding-top:4px;padding-bottom:4px}
+ .teacher-active .teacherbar{padding:2px 8px}
+ .teacher-active .teacherbar button{min-height:24px}
+ .teacher-active .cardtop{padding-top:7px}
+ .teacher-active .stage{padding:5px 18px;gap:3px}
+ .teacher-active .teacher-turn{font-size:18px}
+ .teacher-active .teacher-meta{font-size:10px}
+ .teacher-active .answerbox{min-height:38px;padding:5px 8px;margin-bottom:4px}
+ .teacher-active .teacher-grading{padding-bottom:3px}
+ .teacher-active .teacher-grading button{min-height:28px;padding:4px 10px}
+ .teacher-active .teacher-feedback{font-size:11px;min-height:calc(1.3em + 2px);padding-bottom:2px}
+ .teacher-active .actions button{min-height:36px;padding:6px 8px}
+}
+
 </style></head><body>
 <div class="app" id="app">
 <header class="topbar"><div class="brand"><div class="brandmark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="16" cy="16" r="12"/><ellipse cx="16" cy="16" rx="5.7" ry="12"/><path d="M4 16h24M6 10h20M6 22h20"/></svg></div><div><strong>Geografía</strong><span>Adivina el concepto · PAU Andalucía</span></div></div><div class="tools"><button class="sizebtn" id="smaller" aria-label="Reducir tamaño del texto" title="Reducir texto">A−</button><button class="sizebtn" id="larger" aria-label="Aumentar tamaño del texto" title="Aumentar texto">A+</button><button type="button" class="teacher-entry" id="teacherButton" aria-label="Acceso del profesor" title="Profesor">🔒 <span class="teacher-button-label">Profesor</span></button><button class="topicsbtn" id="topicsButton"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Temas <span class="badge" id="topicCount">10</span></button><button class="iconbtn" id="fullscreen" aria-label="Pantalla completa" title="Pantalla completa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button></div></header><div class="teacherbar" id="teacherBar" hidden><strong id="teacherSessionLabel">Sesión de clase</strong><button type="button" id="teacherManage">Alumnado · sesiones · puntos</button><button type="button" id="teacherLock">Bloquear 🔒</button></div>
-<main class="practice" id="practice"><div class="cardtop"><span class="topic" id="currentTopic"></span><span class="questionno" id="questionNumber"></span></div><div class="stage" id="stage"><p class="teacher-turn" id="teacherTurnName" hidden></p><p class="teacher-meta" id="teacherTurnMeta" hidden></p><p class="eyebrow">¿A qué concepto corresponde?</p><p class="definition" id="definition"></p></div><div class="answerbox" id="answerbox"><span class="answerlabel" id="answerlabel">Piensa la respuesta</span><p class="answer placeholder" id="answer" aria-live="polite">Pulsa «Revelar término» para comprobarlo.</p></div><div class="teacher-grading" id="teacherGrading" hidden><button type="button" class="primary" id="teacherCorrect">Acierto +1</button><button type="button" class="wrong" id="teacherWrong">Fallo · 0</button><button type="button" id="teacherUndo" hidden>Deshacer valoración</button></div><div class="teacher-feedback" id="teacherFeedback" role="status" hidden></div></main>
+<main class="practice" id="practice"><div class="cardtop"><span class="topic" id="currentTopic"></span><span class="questionno" id="questionNumber"></span></div><div class="stage" id="stage"><p class="teacher-turn" id="teacherTurnName" hidden></p><p class="teacher-meta" id="teacherTurnMeta" hidden></p><p class="eyebrow">¿A qué concepto corresponde?</p><p class="definition" id="definition"></p></div><div class="answerbox" id="answerbox"><span class="answerlabel" id="answerlabel">Piensa la respuesta</span><div class="answer-slot"><p class="answer placeholder" id="answer" aria-live="polite">Pulsa «Revelar término» para comprobarlo.</p><p class="answer answer-measure" id="answerMeasure" aria-hidden="true"></p><p class="answer placeholder answer-measure" id="answerHintMeasure" aria-hidden="true"></p></div></div><div class="teacher-grading" id="teacherGrading" hidden><button type="button" class="primary" id="teacherCorrect">Acierto +1</button><button type="button" class="wrong" id="teacherWrong">Fallo · 0</button><button type="button" id="teacherUndo" hidden>Deshacer valoración</button></div><div class="teacher-feedback" id="teacherFeedback" role="status" hidden></div></main>
 <section class="practice done" id="finish" hidden aria-labelledby="finishTitle"><div class="doneicon" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m10 21 7 7 15-17"/></svg></div><p class="eyebrow">Ronda terminada</p><h1 id="finishTitle">¡Has recorrido todo el glosario!</h1><p id="finishSummary"></p><button class="primary" id="newRound">Otra ronda, otro orden ↻</button><button id="finishTopics">Elegir otros temas</button><p class="source">Definiciones de tu glosario de Geografía · PAU Andalucía 2026–2027.<br><a href="https://docs.google.com/document/d/1wunimPYMFxf4UD9MB5OsUjx3PLHJte_L6WWZM4_KMLw/edit" target="_blank" rel="noopener">Consultar documento de referencia</a></p></section>
 <footer class="bottom"><div class="progressinfo"><span id="progressLabel"></span><span id="remaining"></span></div><div class="progress" role="progressbar" id="progress" aria-label="Definiciones recorridas" aria-valuemin="0" aria-valuenow="0" aria-valuemax="138"><span id="progressFill"></span></div><div class="actions" id="actions"><button class="primary" id="reveal">Revelar término <span aria-hidden="true">↗</span></button><button type="button" id="teacherSkip" hidden>Pasar · 0</button></div><p class="keys">Espacio o →: revelar / siguiente · F: pantalla completa · T: temas</p></footer>
 </div>
@@ -81,7 +106,7 @@ function restore(){try{const saved=JSON.parse(localStorage.getItem(KEY)||'null')
 function startRound(selected){const last=state.queue[Math.min(state.index,state.queue.length-1)];const ids=pool(selected);if(!ids.length)return;let queue=shuffled(ids,last);if(queue.length>2&&queue.join('|')===previousSignature){[queue[1],queue[2]]=[queue[2],queue[1]];}previousSignature=queue.join('|');state={...state,selected:[...selected],queue,index:0,revealed:false,revealedIds:[]};hasRound=true;save();render();}
 function render(){if(teacherActive)return renderTeacher();const total=state.queue.length,done=state.index>=total;document.documentElement.style.setProperty('--scale',state.scale);$('topicCount').textContent=state.selected.length;$('practice').hidden=done;$('finish').hidden=!done;$('actions').hidden=done;$('progressLabel').textContent=done?'Ronda completada':`${state.index} de ${total} definiciones recorridas`;$('remaining').textContent=done?'100 %':`${total-state.index} restantes`;$('progressFill').style.width=`${total?state.index/total*100:0}%`;$('progress').setAttribute('aria-valuenow',state.index);$('progress').setAttribute('aria-valuemax',total);
 if(done){const revealed=state.revealedIds.length;$('finishSummary').textContent=`${total} definiciones recorridas · ${revealed} ${revealed===1?'respuesta revelada':'respuestas reveladas'} · ${total-revealed} sin revelar.`;return;}
-const term=byId.get(state.queue[state.index]);$('definition').textContent=term.definition;$('currentTopic').textContent=topicsById.get(term.topic).name;$('questionNumber').textContent=`${state.index+1} / ${total}`;$('answerlabel').textContent=state.revealed?'El concepto es':'Piensa la respuesta';$('answer').textContent=state.revealed?term.term:'Pulsa «Revelar término» para comprobarlo.';$('answer').classList.toggle('placeholder',!state.revealed);$('answerbox').classList.toggle('revealed',state.revealed);$('reveal').disabled=false;$('reveal').innerHTML=state.revealed?(state.index===total-1?'Terminar <span aria-hidden="true">✓</span>':'Siguiente <span aria-hidden="true">→</span>'):'Revelar término <span aria-hidden="true">↗</span>';$('stage').scrollTop=0;}
+const term=byId.get(state.queue[state.index]);$('answerbox').dataset.term=term.term;$('definition').textContent=term.definition;$('currentTopic').textContent=topicsById.get(term.topic).name;$('questionNumber').textContent=`${state.index+1} / ${total}`;$('answerlabel').textContent=state.revealed?'El concepto es':'Piensa la respuesta';$('answer').textContent=state.revealed?term.term:'Pulsa «Revelar término» para comprobarlo.';$('answer').classList.toggle('placeholder',!state.revealed);$('answerbox').classList.toggle('revealed',state.revealed);$('reveal').disabled=false;$('reveal').innerHTML=state.revealed?(state.index===total-1?'Terminar <span aria-hidden="true">✓</span>':'Siguiente <span aria-hidden="true">→</span>'):'Revelar término <span aria-hidden="true">↗</span>';$('stage').scrollTop=0;}
 function reveal(){if(state.index>=state.queue.length||state.revealed)return;state.revealed=true;if(!state.revealedIds.includes(state.queue[state.index]))state.revealedIds.push(state.queue[state.index]);save();render();$('reveal').focus({preventScroll:true});}
 function next(){if(state.index>=state.queue.length||!state.revealed)return;state.index++;state.revealed=false;save();render();if(state.index>=state.queue.length)$('newRound').focus({preventScroll:true});else $('reveal').focus({preventScroll:true});}
 function topicLabel(s){return s.toLocaleLowerCase('es').replace(/^./,c=>c.toLocaleUpperCase('es'));}
@@ -167,7 +192,7 @@ function teacherNextTurn(s){
 function renderTeacher(){
  const s=teacherSession();if(!s?.run?.current)return;const r=s.run,t=r.current,pupil=teacherData.students.find(p=>p.id===t.studentId),term=byId.get(t.termId);document.documentElement.style.setProperty('--scale',state.scale);
  $('practice').hidden=false;$('finish').hidden=true;$('actions').hidden=false;$('teacherBar').hidden=false;$('teacherTurnName').hidden=false;$('teacherTurnMeta').hidden=false;$('teacherTurnName').textContent=pupil.name;$('teacherTurnMeta').textContent=`${teacherStats(pupil.id,[s]).correct} puntos en esta sesión · ${teacherStats(pupil.id,teacherData.sessions).correct} en total`;
- $('teacherSessionLabel').textContent=s.name;$('topicCount').textContent=s.topics.length;$('currentTopic').textContent=topicsById.get(term.topic).name;$('questionNumber').textContent=`Ronda ${r.cycle}`;$('definition').textContent=term.definition;$('answerlabel').textContent=t.revealed?'El concepto es':'Piensa la respuesta';$('answer').textContent=t.revealed?term.term:'Escucha la respuesta y pulsa «Revelar término».';$('answer').classList.toggle('placeholder',!t.revealed);$('answerbox').classList.toggle('revealed',t.revealed);
+ $('teacherSessionLabel').textContent=s.name;$('topicCount').textContent=s.topics.length;$('currentTopic').textContent=topicsById.get(term.topic).name;$('questionNumber').textContent=`Ronda ${r.cycle}`;$('answerbox').dataset.term=term.term;$('definition').textContent=term.definition;$('answerlabel').textContent=t.revealed?'El concepto es':'Piensa la respuesta';$('answer').textContent=t.revealed?term.term:'Escucha la respuesta y pulsa «Revelar término».';$('answer').classList.toggle('placeholder',!t.revealed);$('answerbox').classList.toggle('revealed',t.revealed);
  $('teacherFeedback').hidden=false;$('teacherGrading').hidden=!t.revealed;$('teacherUndo').hidden=!t.result;$('teacherCorrect').disabled=!!t.result;$('teacherWrong').disabled=!!t.result;$('teacherSkip').hidden=t.revealed;$('teacherFeedback').textContent=t.result==='correct'?'¡Correcto! +1 punto':t.result==='wrong'?'Fallo registrado · 0 puntos':t.result==='skip'?'Pregunta pasada · 0 puntos':'';
  $('reveal').textContent=t.result?'Siguiente alumno →':t.revealed?'Marca acierto o fallo':'Revelar término ↗';$('reveal').disabled=t.revealed&&!t.result;
  const count=s.present.filter(id=>r.served.includes(id)).length;$('progressLabel').textContent=`${count} de ${s.present.length} alumnos han tenido su turno`;$('remaining').textContent=`${s.present.length-count} pendientes`;$('progressFill').style.width=`${count/s.present.length*100}%`;$('progress').setAttribute('aria-valuenow',count);$('progress').setAttribute('aria-valuemax',s.present.length);
@@ -194,7 +219,8 @@ const restored=restore();if(restored){hasRound=true;previousSignature=state.queu
 (()=>{
   const app=document.getElementById('app'),practice=document.getElementById('practice');
   const stage=document.getElementById('stage'),definition=document.getElementById('definition');
-  const answer=document.getElementById('answer');
+  const answer=document.getElementById('answer'),measure=document.getElementById('answerMeasure');
+  const hint=document.getElementById('answerHintMeasure'),box=document.getElementById('answerbox');
   let pending=0;
   const visibleChildren=el=>[...el.children].filter(c=>getComputedStyle(c).display!=='none');
   function fit(){
@@ -203,11 +229,17 @@ const restored=restore();if(restored){hasRound=true;previousSignature=state.queu
     app.classList.remove('definition-flow');
     definition.style.removeProperty('font-size');
     answer.style.removeProperty('font-size');
+    measure.style.removeProperty('font-size');
+    const term=box.dataset.term||'';
+    if(measure.textContent!==term)measure.textContent=term;
+    const hintText=document.body.classList.contains('teacher-active')?'Escucha la respuesta y pulsa «Revelar término».':'Pulsa «Revelar término» para comprobarlo.';
+    if(hint.textContent!==hintText)hint.textContent=hintText;
     const preferred=parseFloat(getComputedStyle(definition).fontSize);
     // Keep long revealed terms compact so they cannot cover the question.
     const answerLimit=window.innerHeight<520?38:window.innerHeight<700?64:100;
-    let answerSize=parseFloat(getComputedStyle(answer).fontSize);
-    while(answer.getBoundingClientRect().height>answerLimit&&answerSize>16){answerSize--;answer.style.fontSize=answerSize+'px';}
+    let answerSize=parseFloat(getComputedStyle(measure).fontSize);
+    while(measure.getBoundingClientRect().height>answerLimit&&answerSize>16){answerSize--;measure.style.fontSize=answerSize+'px';}
+    if(!answer.classList.contains('placeholder'))answer.style.fontSize=answerSize+'px';
     const cs=getComputedStyle(stage),children=visibleChildren(stage);
     const otherHeight=children.filter(c=>c!==definition).reduce((sum,c)=>sum+c.getBoundingClientRect().height,0);
     const available=stage.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom)-otherHeight-parseFloat(cs.rowGap||0)*Math.max(0,children.length-1)-2;
@@ -227,7 +259,7 @@ const restored=restore();if(restored){hasRound=true;previousSignature=state.queu
     stage.scrollTop=0;
   }
   const schedule=()=>{if(!pending)pending=requestAnimationFrame(fit);};
-  new MutationObserver(schedule).observe(practice,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['hidden','class']});
+  new MutationObserver(schedule).observe(practice,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['hidden','class','data-term']});
   new MutationObserver(schedule).observe(document.body,{attributes:true,attributeFilter:['class']});
   new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['style']});
   let lastSize='';
@@ -239,3 +271,4 @@ const restored=restore();if(restored){hasRound=true;previousSignature=state.queu
   schedule();
 })();
 </script></body></html>
+
